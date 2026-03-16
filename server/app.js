@@ -1,27 +1,32 @@
 const express = require("express");
-const connectDB = require("./config/db");
-const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const authRouter = require("./routes/auth");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
+const connectDB = require("./config/db");
+const authRoutes = require("./routes/auth");
+const workerRoutes = require("./routes/worker");
 
 const app = express();
 
+// Middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-
-// CORS for front-end
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
-}));
+// CORS with credentials
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 // Routes
-app.use("/api/auth", authRouter);
+app.use("/api/auth", authRoutes);
+app.use("/api/worker", workerRoutes);
 
-// Start server and connect DB
-const port = process.env.PORT || 3000;
-connectDB();
-app.listen(port, () => console.log(`Server running on port ${port}`));
+// Connect to DB and start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT,()=>{
+  connectDB();
+  console.log("server is running");
+})

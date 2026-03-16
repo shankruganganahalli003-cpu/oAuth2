@@ -1,17 +1,26 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import { BrowserRouter } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { Provider } from "react-redux";
-import { store } from "./redux/store";
+import { Toaster } from "react-hot-toast";
+
+import App from "./App.jsx";
+import { store, persistor } from "./redux/store";
+import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <GoogleOAuthProvider clientId="36580754898-22v2fo42sfq5rinlrrsq3sfg42ui0jd4.apps.googleusercontent.com">
-        <App />
-      </GoogleOAuthProvider>
-    </BrowserRouter>
-  </Provider>
+  <React.StrictMode>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <BrowserRouter>
+          <GoogleOAuthProvider clientId="36580754898-22v2fo42sfq5rinlrrsq3sfg42ui0jd4.apps.googleusercontent.com">
+            <App />
+          </GoogleOAuthProvider>
+          <Toaster position="top-center" reverseOrder={false} />
+        </BrowserRouter>
+      </PersistGate>
+    </Provider>
+  </React.StrictMode>
 );
