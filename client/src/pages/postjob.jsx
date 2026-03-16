@@ -50,7 +50,7 @@ const PostJob = () => {
       );
       if (data.success) {
         toast.success("Worker registered successfully!");
-        navigate("/dashboard");
+        navigate("/worker-dashboard");
       } else toast.error(data.message || "Something went wrong");
     } catch (err) {
       toast.error(err?.response?.data?.message || "Something went wrong");

@@ -5,13 +5,13 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import PostJob from "./pages/postjob";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import WorkerDashboard from "./pages/WorkerDashboard";
+import UpdateWorker from "./pages/UpdateWorker";
 
 function App() {
   return (
     <>
       <Navbar />
-       
-
 
       <div className="ml-40">
         <Routes>
@@ -22,6 +22,9 @@ function App() {
           <Route element={<ProtectedRoute />}>
            
             <Route path="/post-job" element={<PostJob />} />
+            <Route path="/worker-dashboard" element={<WorkerDashboard />} />
+            <Route path="/worker/edit/:id" element={<UpdateWorker />} />
+            
           </Route>
         </Routes>
       </div>

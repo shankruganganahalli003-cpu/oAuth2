@@ -45,8 +45,7 @@ const Navbar = () => {
 
         <div className="flex flex-col gap-4 w-full px-4 mt-8">
           <button onClick={() => navigate("/")} className="w-full bg-white py-2 rounded-lg shadow hover:scale-105 transition">🏠 Home</button>
-          <button onClick={() => navigate("/post-job")} className="w-full bg-white py-2 rounded-lg shadow hover:bg-orange-200 transition">📢 Post Job</button>
-          <button onClick={() => navigate("/workers")} className="w-full bg-white py-2 rounded-lg shadow hover:bg-green-200 transition">👷 Workers</button>
+          <button onClick={() => navigate("/worker-dashboard")} className="w-full bg-white py-2 rounded-lg shadow hover:bg-orange-200 transition">📢 Dashboard</button>
           <button onClick={handleLogout} className="w-full bg-red-500 text-white py-2 rounded-lg shadow hover:bg-red-600 transition">🔒 Logout</button>
         </div>
 

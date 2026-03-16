@@ -19,11 +19,7 @@ function Home() {
         setid(data.get);
         toast.success(data.message);
       }
-
-
     }
-
-
     useEffect(() => {
       getid();
     }, [])
@@ -41,11 +37,12 @@ function Home() {
     <div className="w-full min-h-screen bg-linear-to-b from-orange-50 via-white to-green-50">
       
    <div className="flex w-full items-end justify-end p-4">
+
   {id.length > 0 && (
     <img
       className="w-12 h-12 mr-2 cursor-pointer rounded-full object-cover border-2 border-orange-400"
-      onClick={() => navigate("/dashboard")}
-      src={id[0].image ? id[0].image : "/default-avatar.png"} // ✅ show default if no image
+      onClick={() => navigate("/worker-dashboard")}
+      src={id[0].image ? id[0].image : "/default-avatar.png"} 
       alt={user?.name || "Profile"}
     />
   )}

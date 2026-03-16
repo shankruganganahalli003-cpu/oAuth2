@@ -49,3 +49,40 @@ module.exports.getme = async (req,res) => {
   }
   
 }
+
+module.exports.getid = async (req,res) => {
+  try {
+
+    const {id} = req.params;
+
+    if(!id){
+      return  res.status(404).json({message:"Id not found"});
+    }
+
+    const find = await Worker.findById(id);
+
+    return res.status(200).json({message:"fetched id",success:true,find});
+
+    
+  } catch (err) {
+    console.log(err.message);
+  }
+  
+}
+
+module.exports.update = async (req,res) => {
+  try{
+
+    const {id} = req.params;
+    const {  gender,dob,phone,location,skills,country,state,image,city,} = req.body
+
+    const update = await Worker.findByIdAndUpdate(id,{  gender,dob,phone,location,skills,country,state,image,city},{returnDocument:"after"});
+
+    return res.status(200).json({message:"updated",success:true,update});
+
+
+  }catch(err){
+    console.log(err.message);
+  }
+  
+}
