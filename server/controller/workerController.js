@@ -86,3 +86,16 @@ module.exports.update = async (req,res) => {
   }
   
 }
+
+module.exports.deleteid = async (req,res) => {
+  try {
+
+    const {id} = req.params;
+    const deleteid = await Worker.findByIdAndDelete(id);
+    return res.status(200).json({message:"Deleted",success:true,deleteid});
+    
+  } catch (err) {
+    console.log(err.message)
+  }
+  
+}

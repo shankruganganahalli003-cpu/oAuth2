@@ -5,10 +5,11 @@ import {
     UserIcon, CalendarIcon, PhoneIcon, MapPinIcon,
     BuildingLibraryIcon, FlagIcon, AcademicCapIcon, IdentificationIcon, PencilSquareIcon, TrashIcon
 } from '@heroicons/react/24/outline';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const WorkerDashboard = () => {
     const navigate = useNavigate();
+    
     const [workers, setWorkers] = useState([]);
 
     const fetchWorkers = async () => {
@@ -22,6 +23,27 @@ const WorkerDashboard = () => {
             toast.error(err?.response?.data?.message || "Something went wrong");
         }
     };
+
+    const handledelete = async(id)=>{
+        try {
+            if (!window.confirm("Delete this profile?")) return;
+            const {data} = await axios.delete(`http://localhost:3000/api/worker/delete/${id}`,{
+                withCredentials:true
+            });
+
+            if(data.success){
+                console.log(data);
+                toast.success(data.message);
+                fetchWorkers();
+                navigate("post-job");
+            }
+
+            
+        } catch (err) {
+            toast.error(err?.response?.data?.message);
+            console.log(err.message);
+        }
+    }
 
     useEffect(() => {
         fetchWorkers();
@@ -54,7 +76,7 @@ const WorkerDashboard = () => {
                                         <PencilSquareIcon onClick={() => { navigate(`/worker/edit/${worker._id}`) }} className="w-10 h-20 hover:scale-110 transition duration-200 text-blue-600 hover:text-blue-900 cursor-pointer" />
 
                                         {/* Delete Icon */}
-                                        <TrashIcon className="w-10 h-20 text-red-600 hover:text-red-900 hover:scale-110 transition duration-200 cursor-pointer" />
+                                        <TrashIcon onClick={()=>{handledelete(worker._id)}} className="w-10 h-20 text-red-600 hover:text-red-900 hover:scale-110 transition duration-200 cursor-pointer" />
                                     </div>
                                 </div>
 
