@@ -9,7 +9,7 @@ function Home() {
   const [id, setid] = useState([]);
 
     const getid =async ()=>{
-      const {data} = await axios.get("http://localhost:3000/api/worker/get",{
+      const {data} = await axios.get("http://localhost:3000/api/worker/getme",{
         withCredentials:true
       });
 
