@@ -20,6 +20,7 @@ exports.createWorker = async (req, res) => {
       userId: req.userId,
     });
 
+
     res.status(200).json({ success: true, worker });
   } catch (err) {
     console.error(err);
@@ -29,8 +30,8 @@ exports.createWorker = async (req, res) => {
 
 exports.getAllWorkers = async (req, res) => {
   try {
-    const workers = await Worker.find();
-    res.status(200).json({ success: true, workers });
+    const getall = await Worker.find();
+    res.status(200).json({ success: true, getall });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message });
@@ -70,23 +71,35 @@ module.exports.getid = async (req,res) => {
   
 }
 
-module.exports.update = async (req,res) => {
-  try{
+module.exports.update = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { gender, dob, phone, location, skills, country, state, image, city } = req.body;
 
-    const {id} = req.params;
-    const {  gender,dob,phone,location,skills,country,state,image,city,} = req.body
+    const update = await Worker.findByIdAndUpdate(
+      id,
+      {
+        gender,
+        dob,
+        phone,
+        location,
+        skills,
+        country,
+        state,
+        city,
 
-    const update = await Worker.findByIdAndUpdate(id,{  gender,dob,phone,location,skills,country,state,image,city},{returnDocument:"after"});
+        // ✅ FIX HERE
+        image: image?.trim() ? image : undefined
+      },
+      { new: true }
+    );
 
-    return res.status(200).json({message:"updated",success:true,update});
+    return res.status(200).json({ message: "updated", success: true, update });
 
-
-  }catch(err){
+  } catch (err) {
     console.log(err.message);
   }
-  
-}
-
+};
 module.exports.deleteid = async (req,res) => {
   try {
 

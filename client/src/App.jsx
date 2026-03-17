@@ -7,6 +7,8 @@ import PostJob from "./pages/postjob";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import WorkerDashboard from "./pages/WorkerDashboard";
 import UpdateWorker from "./pages/UpdateWorker";
+import Allworkers from "./pages/Allworkers";
+
 
 function App() {
   return (
@@ -17,6 +19,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          
 
           {/* Protected routes */}
           <Route element={<ProtectedRoute />}>
@@ -24,6 +27,7 @@ function App() {
             <Route path="/post-job" element={<PostJob />} />
             <Route path="/worker-dashboard" element={<WorkerDashboard />} />
             <Route path="/worker/edit/:id" element={<UpdateWorker />} />
+            <Route path="/all-workers" element={<Allworkers />} />
             
           </Route>
         </Routes>

@@ -5,7 +5,7 @@ import {
     UserIcon, CalendarIcon, PhoneIcon, MapPinIcon,
     BuildingLibraryIcon, FlagIcon, AcademicCapIcon, IdentificationIcon, PencilSquareIcon, TrashIcon
 } from '@heroicons/react/24/outline';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const WorkerDashboard = () => {
     const navigate = useNavigate();

@@ -76,12 +76,18 @@ function Home() {
             null
             
           ):(
+            <div className="gap-10 flex">
             <button
             onClick={() => navigate("/post-job")}
             className="px-6 py-3 rounded-xl cursor-pointer bg-linear-to-r from-orange-400 to-orange-600 text-white font-bold shadow-lg hover:scale-105 transition"
           >
-            Post Job
+            Create Worker Profile
           </button>
+          
+          <button className="px-6 py-3 cursor-pointer rounded-xl bg-linear-to-r from-green-400 to-green-600 text-white font-bold shadow-lg hover:scale-105 transition" onClick={()=>{navigate("/all-workers")}}>
+            Show workers
+          </button>
+          </div>
           )}
           
           {id.length>0&&(
