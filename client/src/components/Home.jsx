@@ -84,13 +84,15 @@ function Home() {
           </button>
           )}
           
-
-          <button
-            onClick={() => navigate("/workers")}
+          {id.length>0&&(
+             <button
+            onClick={() => navigate("/notification")}
             className="px-6 py-3 cursor-pointer rounded-xl bg-linear-to-r from-green-400 to-green-600 text-white font-bold shadow-lg hover:scale-105 transition"
           >
-            See Workers
+            Get Notifications
           </button>
+          )}
+         
         </div>
 
       </div>

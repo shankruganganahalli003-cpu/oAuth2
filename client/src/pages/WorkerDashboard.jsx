@@ -35,7 +35,7 @@ const WorkerDashboard = () => {
                 console.log(data);
                 toast.success(data.message);
                 fetchWorkers();
-                navigate("post-job");
+                navigate("/post-job");
             }
 
             
