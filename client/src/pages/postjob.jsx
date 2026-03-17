@@ -12,12 +12,15 @@ import {
   FaGlobe,
   FaFlag,
   FaBirthdayCake,
-  FaImage
+  FaImage,
+  FaFileAlt
 } from "react-icons/fa";
 
 const PostJob = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
+    name: "",
+    desc: "",
     gender: "",
     dob: "",
     phone: "",
@@ -57,14 +60,15 @@ const PostJob = () => {
     }
   };
 
-  // Input fields with icons and colors
   const inputFields = [
+    { name: "name", label: "Name", icon: <FaUser className="text-orange-500" />, type: "text", placeholder: "Enter your name", full: true },
     { name: "gender", label: "Gender", icon: <FaUser className="text-orange-500" />, type: "select", options: ["Male", "Female", "Other"] },
     { name: "dob", label: "Date of Birth", icon: <FaBirthdayCake className="text-pink-500" />, type: "date" },
     { name: "phone", label: "Phone", icon: <FaPhone className="text-green-500" />, type: "text", placeholder: "Enter your phone" },
-    { name: "image", label: "Image", icon: <FaImage className="text-violet-600-500" />, type: "text", placeholder: "upload image" },
+    { name: "image", label: "Image", icon: <FaImage className="text-violet-600-500" />, type: "text", placeholder: "Upload image" },
     { name: "skills", label: "Skills", icon: <FaTools className="text-blue-500" />, type: "text", placeholder: "Plumber, Electrician..." },
     { name: "location", label: "Address", icon: <FaMapMarkerAlt className="text-red-500" />, type: "text", full: true, placeholder: "Enter your address" },
+    { name: "desc", label: "Description", icon: <FaFileAlt className="text-gray-500" />, type: "textarea", placeholder: "Write a short description", full: true },
     {
       name: "country",
       label: "Country",
@@ -99,6 +103,14 @@ const PostJob = () => {
                       <option key={opt.value || opt} value={opt.value || opt}>{opt.label || opt}</option>
                     ))}
                   </select>
+                ) : field.type === "textarea" ? (
+                  <textarea
+                    name={field.name}
+                    value={form[field.name]}
+                    onChange={handleChange}
+                    placeholder={field.placeholder || ""}
+                    className="w-full border p-3 rounded-lg pl-10 focus:ring-2 focus:ring-orange-400 transition resize-none"
+                  />
                 ) : (
                   <input
                     type={field.type}

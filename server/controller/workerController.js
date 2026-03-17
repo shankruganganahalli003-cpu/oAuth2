@@ -2,15 +2,17 @@ const Worker = require("../models/Worker");
 
 exports.createWorker = async (req, res) => {
   try {
-    const { gender, dob, phone, location, skills, country, state, city ,image } = req.body;
+    const { gender, dob, phone, location, skills, country, state, city ,image ,name,desc } = req.body;
 
-    if (!gender || !dob || !phone || !location || !skills || !country || !state || !city)
+    if (!gender || !dob || !phone || !location || !skills || !country || !state || !city || !name || !desc)
       return res.status(400).json({ message: "All fields are required" });
 
     const worker = await Worker.create({
       gender,
       dob,
       phone,
+      name,
+      desc,
       location,
       skills,
       country,
@@ -74,7 +76,7 @@ module.exports.getid = async (req,res) => {
 module.exports.update = async (req, res) => {
   try {
     const { id } = req.params;
-    const { gender, dob, phone, location, skills, country, state, image, city } = req.body;
+    const { gender, dob, phone, location, skills, country, state, image, city ,name,desc } = req.body;
 
     const update = await Worker.findByIdAndUpdate(
       id,
@@ -87,9 +89,9 @@ module.exports.update = async (req, res) => {
         country,
         state,
         city,
-
-        // ✅ FIX HERE
-        image: image?.trim() ? image : undefined
+        image,
+        name,
+        desc
       },
       { new: true }
     );

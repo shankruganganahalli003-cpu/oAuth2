@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import {
     UserIcon, CalendarIcon, PhoneIcon, MapPinIcon,
-    BuildingLibraryIcon, FlagIcon, AcademicCapIcon, IdentificationIcon, PencilSquareIcon, TrashIcon
+    BuildingLibraryIcon, FlagIcon, AcademicCapIcon, IdentificationIcon, PencilSquareIcon, TrashIcon, InformationCircleIcon
 } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,13 +32,10 @@ const WorkerDashboard = () => {
             });
 
             if(data.success){
-                console.log(data);
                 toast.success(data.message);
                 fetchWorkers();
                 navigate("/post-job");
             }
-
-            
         } catch (err) {
             toast.error(err?.response?.data?.message);
             console.log(err.message);
@@ -60,30 +57,38 @@ const WorkerDashboard = () => {
                     {workers.map(worker => (
                         <div
                             key={worker._id}
-                            className="bg-white rounded-xl shadow-lg  flex-col md:flex-row items-center md:items-start p-6 md:p-8 transform transition-all duration-500 hover:scale-101 hover:shadow-2xl"
+                            className="bg-white rounded-xl shadow-lg flex-col md:flex-row items-center md:items-start p-6 md:p-8 transform transition-all duration-500 hover:scale-101 hover:shadow-2xl"
                         >
-                            {/* Left: Circular Image */}
+                            {/* Left: Circular Image and Actions */}
                             <div className="flex-shrink-0 mb-6 md:mb-0 md:mr-8">
-
                                 <div className='flex justify-between items-center'>
                                     <img
                                         src={worker.image}
-                                        alt="worker"
+                                        alt={worker.name || "worker"}
                                         className="w-48 h-48 rounded-full object-cover border-4 border-gray-300 shadow-md"
                                     />
                                     <div className='flex gap-10'>
-                                        {/* Edit Icon */}
                                         <PencilSquareIcon onClick={() => { navigate(`/worker/edit/${worker._id}`) }} className="w-10 h-20 hover:scale-110 transition duration-200 text-blue-600 hover:text-blue-900 cursor-pointer" />
-
-                                        {/* Delete Icon */}
                                         <TrashIcon onClick={()=>{handledelete(worker._id)}} className="w-10 h-20 text-red-600 hover:text-red-900 hover:scale-110 transition duration-200 cursor-pointer" />
                                     </div>
                                 </div>
-
                             </div>
 
                             {/* Right: Worker Info */}
                             <div className="flex-1 space-y-3 text-gray-700 w-full mt-3">
+                                {/* Name */}
+                                <p className="flex items-center gap-2 text-gray-800 font-bold text-xl">
+                                    <UserIcon className="w-5 h-5" /> {worker.name || "Worker Name"}
+                                </p>
+
+                                {/* Description / Desc */}
+                                {worker.desc && (
+                                    <p className="flex items-start gap-2 text-gray-600">
+                                        <InformationCircleIcon className="w-5 h-5 mt-1" /> {worker.desc}
+                                    </p>
+                                )}
+
+                                {/* Other Details */}
                                 <p className="flex items-center gap-2 text-blue-600 font-medium">
                                     <UserIcon className="w-5 h-5" /> Gender: {worker.gender}
                                 </p>
@@ -117,7 +122,6 @@ const WorkerDashboard = () => {
                                 <p className="flex items-center gap-2 text-gray-800 font-medium">
                                     <IdentificationIcon className="w-5 h-5" /> Worker ID: {worker._id}
                                 </p>
-
                             </div>
                         </div>
                     ))}

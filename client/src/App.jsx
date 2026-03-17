@@ -15,7 +15,7 @@ function App() {
     <>
       <Navbar />
 
-      <div className="ml-40">
+      <div className="ml-50">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />

@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { FaPhoneAlt, FaEye, FaMapMarkerAlt, FaTools, FaBirthdayCake, FaMars, FaVenus } from "react-icons/fa";
+import { FaPhoneAlt, FaEye, FaMapMarkerAlt, FaTools, FaBirthdayCake, FaMars, FaVenus, FaAlignLeft } from "react-icons/fa";
 
 const Allworkers = () => {
   const navigate = useNavigate();
@@ -45,34 +45,50 @@ const Allworkers = () => {
               <div className="absolute top-14 left-1/2 transform -translate-x-1/2">
                 <img
                   className="w-28 h-28 rounded-full border-4 border-white object-cover shadow-lg group-hover:scale-110 transition-transform duration-300"
-                  src={worker.image.length > 0 ? worker.image : "/default-avatar.png"}
-                  alt="worker"
+                  src={worker.image || "/default-avatar.png"}
+                  alt={worker.name || "worker"}
                 />
               </div>
 
               {/* CONTENT */}
-              <div className="pt-20 pb-6 px-6 flex flex-col  items-start space-y-3">
+              <div className="pt-20 pb-6 px-6 flex flex-col items-start space-y-2">
+                {/* Name */}
                 <h2 className="text-2xl font-bold text-gray-800">{worker.name || "Worker"}</h2>
 
-                <p className="text-gray-500 text-sm flex items-center justify-center gap-1">
+                {/* Description (desc) */}
+                {worker.desc && (
+                  <p className="text-gray-500 text-sm flex items-center gap-1">
+                    <FaAlignLeft className="text-gray-400" /> {worker.desc}
+                  </p>
+                )}
+
+                {/* Location */}
+                <p className="text-gray-500 text-sm flex items-center gap-1">
                   <FaMapMarkerAlt className="text-orange-500" /> {worker.city}, {worker.state}
                 </p>
 
-                <p className="text-gray-600 text-sm flex items-center justify-center gap-1">
+                {/* Skills */}
+                <p className="text-gray-600 text-sm flex items-center gap-1">
                   <FaTools className="text-blue-500" /> {worker.skills}
                 </p>
 
-                <p className="text-gray-600 text-sm flex items-center justify-center gap-1">
+                {/* Phone */}
+                <p className="text-gray-600 text-sm flex items-center gap-1">
                   <FaPhoneAlt className="text-green-500" /> {worker.phone}
                 </p>
 
-                <p className="text-gray-500 text-xs flex items-center justify-center gap-2">
+                {/* DOB & Gender */}
+                <p className="text-gray-500 text-xs flex items-center gap-2">
                   <FaBirthdayCake className="text-pink-400" /> {worker.dob} •{" "}
-                  {worker.gender === "Male" ? <FaMars className="text-blue-500" /> : <FaVenus className="text-pink-500" />}
+                  {worker.gender === "Male" ? (
+                    <FaMars className="text-blue-500" />
+                  ) : worker.gender === "Female" ? (
+                    <FaVenus className="text-pink-500" />
+                  ) : null}
                 </p>
 
-                {/* BUTTONS */}
-                <div className=" w-full flex gap-5 mt-4 items-center justify-center">
+                {/* ACTION BUTTONS */}
+                <div className="w-full flex gap-5 mt-4 items-center justify-center">
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
