@@ -8,6 +8,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import WorkerDashboard from "./pages/WorkerDashboard";
 import UpdateWorker from "./pages/UpdateWorker";
 import Allworkers from "./pages/Allworkers";
+import OneWorker from "./pages/OneWorker";
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
             <Route path="/worker-dashboard" element={<WorkerDashboard />} />
             <Route path="/worker/edit/:id" element={<UpdateWorker />} />
             <Route path="/all-workers" element={<Allworkers />} />
+            <Route path="/worker/:id" element={<OneWorker />} />
             
           </Route>
         </Routes>

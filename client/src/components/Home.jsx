@@ -5,52 +5,46 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
-
-  const [id, setid] = useState([]);
-
-    const getid =async ()=>{
-      const {data} = await axios.get("http://localhost:3000/api/worker/getme",{
-        withCredentials:true
-      });
-
-      console.log(data);
-
-      if(data.success){
-        setid(data.get);
-        toast.success(data.message);
-      }
-    }
-    useEffect(() => {
-      getid();
-    }, [])
-
-
-
+  const [profile, setProfile] = useState(null);
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
+  // Get worker profile if exists
+  const getProfile = async () => {
+    try {
+      const { data } = await axios.get("http://localhost:3000/api/worker/getme", {
+        withCredentials: true,
+      });
+
+      if (data.success) {
+        setProfile(data.get[0] || null); // first profile if exists
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to fetch profile");
+    }
+  };
+
+  useEffect(() => {
+    if (user?.role === "worker") getProfile();
+  }, [user]);
+
   return (
-
-    <>
-
-  
-    <div className="w-full min-h-screen bg-linear-to-b from-orange-50 via-white to-green-50">
-      
-   <div className="flex w-full items-end justify-end p-4">
-
-  {id.length > 0 && (
-    <img
-      className="w-12 h-12 mr-2 cursor-pointer rounded-full object-cover border-2 border-orange-400"
-      onClick={() => navigate("/worker-dashboard")}
-      src={id[0].image ? id[0].image : "/default-avatar.png"} 
-      alt={user?.name || "Profile"}
-    />
-  )}
-</div>
+    <div className="w-full min-h-screen bg-gradient-to-b from-orange-50 via-white to-green-50">
+      {/* Profile Image */}
+      {profile && (
+        <div className="flex w-full justify-end p-4">
+          <img
+            className="w-12 h-12 mr-2 cursor-pointer rounded-full object-cover border-2 border-orange-400"
+            onClick={() => navigate("/worker-dashboard")}
+            src={profile.image || "/default-avatar.png"}
+            alt={user?.name || "Profile"}
+          />
+        </div>
+      )}
 
       {/* Hero Section */}
       <div className="flex flex-col items-center justify-center text-center p-10 gap-6">
-
         <h1 className="text-5xl font-bold animate-bounce">
           <span className="text-orange-500">दक्ष</span>{" "}
           <span className="text-white bg-green-600 px-2 rounded">भारत</span>
@@ -58,7 +52,6 @@ function Home() {
 
         <h2 className="text-2xl font-semibold text-gray-700">
           Welcome, {user?.name}
-     
         </h2>
 
         <p className="max-w-2xl text-gray-600 text-lg">
@@ -70,42 +63,37 @@ function Home() {
 
         {/* Buttons */}
         <div className="flex gap-6 mt-4">
-
-
-          {id.length>0?(
-            null
-            
-          ):(
-            <div className="gap-10 flex">
+          {user?.role === "user" && (
             <button
-            onClick={() => navigate("/post-job")}
-            className="px-6 py-3 rounded-xl cursor-pointer bg-linear-to-r from-orange-400 to-orange-600 text-white font-bold shadow-lg hover:scale-105 transition"
-          >
-            Create Worker Profile
-          </button>
-          
-          <button className="px-6 py-3 cursor-pointer rounded-xl bg-linear-to-r from-green-400 to-green-600 text-white font-bold shadow-lg hover:scale-105 transition" onClick={()=>{navigate("/all-workers")}}>
-            Show workers
-          </button>
-          </div>
+              onClick={() => navigate("/all-workers")}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-green-400 to-green-600 text-white font-bold shadow-lg hover:scale-105 transition"
+            >
+              Show Workers
+            </button>
           )}
-          
-          {id.length>0&&(
-             <button
-            onClick={() => navigate("/notification")}
-            className="px-6 py-3 cursor-pointer rounded-xl bg-linear-to-r from-green-400 to-green-600 text-white font-bold shadow-lg hover:scale-105 transition"
-          >
-            Get Notifications
-          </button>
-          )}
-         
-        </div>
 
+          {user?.role === "worker" && !profile && (
+            <button
+              onClick={() => navigate("/post-job")}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-orange-400 to-orange-600 text-white font-bold shadow-lg hover:scale-105 transition"
+            >
+              Create Worker Profile
+            </button>
+          )}
+
+          {user?.role === "worker" && profile && (
+            <button
+              onClick={() => navigate("/notification")}
+              className="px-6 py-3 rounded-xl bg-gradient-to-r from-green-400 to-green-600 text-white font-bold shadow-lg hover:scale-105 transition"
+            >
+              Get Notifications
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Features Section */}
       <div className="grid md:grid-cols-3 gap-8 p-10">
-
         <div className="bg-white rounded-xl shadow-lg p-6 text-center">
           <h3 className="text-xl font-bold text-orange-600 mb-2">
             Find Skilled Workers
@@ -135,11 +123,8 @@ function Home() {
             customers benefit from transparent opportunities.
           </p>
         </div>
-
       </div>
-      </div>
-</>
-     
+    </div>
   );
 }
 

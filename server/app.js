@@ -24,7 +24,7 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.use("/api/worker", workerRoutes);
 
-// Connect to DB and start server
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT,()=>{
   connectDB();
