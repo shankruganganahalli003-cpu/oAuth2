@@ -11,6 +11,7 @@ import Allworkers from "./pages/Allworkers";
 import OneWorker from "./pages/OneWorker";
 
 
+
 function App() {
   return (
     <>
@@ -30,6 +31,7 @@ function App() {
             <Route path="/worker/edit/:id" element={<UpdateWorker />} />
             <Route path="/all-workers" element={<Allworkers />} />
             <Route path="/worker/:id" element={<OneWorker />} />
+
             
           </Route>
         </Routes>

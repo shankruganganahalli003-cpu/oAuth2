@@ -1,5 +1,6 @@
 const { OAuth2Client } = require("google-auth-library");
 const jwt = require("jsonwebtoken");
+// controller.js
 const User = require("../models/User");
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -52,5 +53,17 @@ exports.googleLogin = async (req, res) => {
   } catch (err) {
     console.error("Google login error:", err.message);
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+
+module.exports.getusers = async (req, res) => {
+  try {
+    const findusers = await User.find({ role: "user" });
+    return res.status(200).json({ success: true, findusers });
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).json({ success: false, message: "Server error" });
   }
 };

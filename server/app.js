@@ -6,6 +6,8 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/auth");
 const workerRoutes = require("./routes/worker");
 
+
+
 const app = express();
 
 // Middleware
@@ -23,6 +25,7 @@ app.use(
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/worker", workerRoutes);
+
 
 
 const PORT = process.env.PORT || 3000;
