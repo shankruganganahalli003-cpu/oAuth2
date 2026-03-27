@@ -48,7 +48,7 @@ const WorkerDashboard = () => {
 
     return (
         <div className="p-6 bg-gradient-to-b from-gray-100 to-gray-200 min-h-screen">
-            <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Worker Dashboard</h1>
+            <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Worker Profile</h1>
 
             {workers.length === 0 ? (
                 <p className="text-center text-gray-500">No workers found.</p>

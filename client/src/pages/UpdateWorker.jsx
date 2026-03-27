@@ -28,7 +28,8 @@ const UpdateWorker = () => {
     country: "",
     state: "",
     city: "",
-    image: ""
+    image: "",
+    desc:"",
   });
 
   // Fetch worker data
@@ -48,7 +49,8 @@ const UpdateWorker = () => {
           country: data.find.country,
           state: data.find.state,
           city: data.find.city,
-          image: data.find.image
+          image: data.find.image,
+          desc: data.find.desc
         });
       }
     } catch (err) {
@@ -100,7 +102,8 @@ const UpdateWorker = () => {
     { name: "phone", label: "Phone", icon: <FaPhone className="text-green-500" />, type: "text", placeholder: "Enter phone" },
     { name: "image", label: "Image URL", icon: <FaImage className="text-violet-500" />, type: "text", placeholder: "Image URL" },
     { name: "skills", label: "Skills", icon: <FaTools className="text-blue-500" />, type: "text", placeholder: "Plumber, Electrician..." },
-    { name: "location", label: "Address", icon: <FaMapMarkerAlt className="text-red-500" />, type: "text", full: true, placeholder: "Enter your address" },
+    { name: "desc", label: "Description", icon: <FaTools className="text-black" />, type: "text", placeholder: "Plumber, Electrician..." },
+    { name: "location", label: "Address", icon: <FaMapMarkerAlt className="text-red-500" />, type: "text", full: true, placeholder: "Descriptioncd clieny" },
     { name: "country", label: "Country", icon: <FaGlobe className="text-teal-500" />, type: "select", options: countries.map(c => ({ value: c.isoCode, label: `${c.name} ${c.flag || ""}` })) },
     { name: "state", label: "State", icon: <FaFlag className="text-yellow-500" />, type: "select", options: states.map(s => ({ value: s.isoCode, label: s.name })), disabled: !form.country },
     { name: "city", label: "City", icon: <FaCity className="text-purple-500" />, type: "select", options: cities.map(c => ({ value: c.name, label: c.name })), disabled: !form.state, full: true }
