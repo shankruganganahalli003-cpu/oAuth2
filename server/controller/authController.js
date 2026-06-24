@@ -41,13 +41,12 @@ exports.googleLogin = async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    res.cookie("token", jwtToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
-
+   res.cookie("token", jwtToken, {
+  httpOnly: true,
+  secure: false,   // 🔥 MUST BE FALSE in localhost
+  sameSite: "lax", // 🔥 IMPORTANT
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+});
     return res.json({
       success: true,
       user,

@@ -15,7 +15,7 @@ const OneWorker = () => {
 
   const getOneWorker = async () => {
     try {
-      const { data } = await axios.get(`http://localhost:3000/api/worker/getid/${id}`, {
+      const { data } = await axios.get(`https://oauth2-p9p9.onrender.com/api/worker/getid/${id}`, {
         withCredentials: true,
       });
 

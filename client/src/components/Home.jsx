@@ -12,7 +12,7 @@ function Home() {
   // Get worker profile if exists
   const getProfile = async () => {
     try {
-      const { data } = await axios.get("http://localhost:3000/api/worker/getme", {
+      const { data } = await axios.get("https://oauth2-p9p9.onrender.com/api/worker/getme", {
         withCredentials: true,
       });
 

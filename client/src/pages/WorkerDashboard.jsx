@@ -14,7 +14,7 @@ const WorkerDashboard = () => {
 
     const fetchWorkers = async () => {
         try {
-            const { data } = await axios.get("http://localhost:3000/api/worker/getme", {
+            const { data } = await axios.get("https://oauth2-p9p9.onrender.com/api/worker/getme", {
                 withCredentials: true
             });
             if (data.success) setWorkers(data.get);
@@ -27,7 +27,7 @@ const WorkerDashboard = () => {
     const handledelete = async(id)=>{
         try {
             if (!window.confirm("Delete this profile?")) return;
-            const {data} = await axios.delete(`http://localhost:3000/api/worker/delete/${id}`,{
+            const {data} = await axios.delete(`https://oauth2-p9p9.onrender.com/api/worker/delete/${id}`,{
                 withCredentials:true
             });
 

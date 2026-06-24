@@ -47,7 +47,7 @@ const PostJob = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/api/worker/create",
+        "https://oauth2-p9p9.onrender.com/api/worker/create",
         form,
         { headers: { "Content-Type": "application/json" }, withCredentials: true }
       );

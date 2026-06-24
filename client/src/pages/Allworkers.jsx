@@ -10,7 +10,7 @@ const Allworkers = () => {
 
   const fetchWorkers = async () => {
     try {
-      const { data } = await axios.get("http://localhost:3000/api/worker/getall", { withCredentials: true });
+      const { data } = await axios.get("https://oauth2-p9p9.onrender.com/api/worker/getall", { withCredentials: true });
       if (data.success) setWorkers(data.getall);
     } catch (err) {
       console.log(err.message);

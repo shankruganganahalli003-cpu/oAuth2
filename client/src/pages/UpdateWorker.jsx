@@ -35,7 +35,7 @@ const UpdateWorker = () => {
   // Fetch worker data
   const findData = async () => {
     try {
-      const { data } = await axios.get(`http://localhost:3000/api/worker/getid/${id}`, {
+      const { data } = await axios.get(`https://oauth2-p9p9.onrender.com/api/worker/getid/${id}`, {
         withCredentials: true
       });
       if (data.success) {
@@ -71,7 +71,7 @@ const UpdateWorker = () => {
   const updateWorker = async () => {
     try {
       const { data } = await axios.put(
-        `http://localhost:3000/api/worker/update/${id}`,
+        `https://oauth2-p9p9.onrender.com/api/worker/update/${id}`,
         form,
         { headers: { "Content-Type": "application/json" }, withCredentials: true }
       );
