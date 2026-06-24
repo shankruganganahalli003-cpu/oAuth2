@@ -6,16 +6,15 @@ import { setCredentials } from "../redux/authSlice";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-// Role styles (SAFE for production)
 const roleStyles = {
   user: {
     selected: "bg-blue-500 text-white shadow-lg scale-105",
-    normal: "bg-gray-200 text-gray-700 hover:bg-gray-300"
+    normal: "bg-gray-200 text-gray-700 hover:bg-gray-300",
   },
   worker: {
     selected: "bg-green-500 text-white shadow-lg scale-105",
-    normal: "bg-gray-200 text-gray-700 hover:bg-gray-300"
-  }
+    normal: "bg-gray-200 text-gray-700 hover:bg-gray-300",
+  },
 };
 
 const RoleButton = ({ roleName, selectedRole, setRole }) => {
@@ -36,50 +35,63 @@ const RoleButton = ({ roleName, selectedRole, setRole }) => {
 };
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const [role, setRole] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleLogin = async (credentialResponse) => {
-    if (!role) {
-      toast.error("Please select your role first!");
-      return;
-    }
-
-    if (!credentialResponse?.credential) {
-      toast.error("Google login ");
-      return;
-    }
-
-    setLoading(true);
-console.log("dmcnddnfdfffdfdfdfdfdfdffd")
     try {
+      // 1. ROLE CHECK
+      if (!role) {
+        toast.error("Please select your role first!");
+        return;
+      }
+
+      // 2. TOKEN CHECK
+      const token = credentialResponse?.credential;
+
+      if (!token) {
+        toast.error("Google login failed (no token received)");
+        return;
+      }
+
+      setLoading(true);
+
+      // 3. SEND TO BACKEND
       const { data } = await axios.post(
         "https://oauth2-p9p9.onrender.com/api/auth/google-login",
         {
-          token: credentialResponse.credential,
-          role  
+          token,
+          role,
         },
-        { withCredentials: true }
+        {
+          withCredentials: true,
+        }
       );
-    
-  
 
-      dispatch(setCredentials({ user: data.user, token: data.jwtToken }));
+      // 4. SAVE STATE
+      dispatch(
+        setCredentials({
+          user: data.user,
+          token: data.jwtToken,
+        })
+      );
 
       localStorage.setItem("token", data.jwtToken);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      toast.success(`Welcome back, ${data.user.name}!`);
+      toast.success(`Welcome ${data.user.name}`);
+
+      // 5. REDIRECT
       navigate("/");
     } catch (err) {
-      const message =
-        err.response?.data?.message;
+      console.log("LOGIN ERROR:", err.response?.data || err.message);
 
-      toast.error(message);
-      console.error("Login error:", err.response || err.message);
+      toast.error(
+        err.response?.data?.error || "Login failed"
+      );
     } finally {
       setLoading(false);
     }
@@ -87,9 +99,10 @@ console.log("dmcnddnfdfffdfdfdfdfdfdffd")
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-100 via-white to-green-100 px-4">
-      <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8 text-center transition-transform duration-500 hover:scale-105">
 
-        {/* Title */}
+      <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8 text-center">
+
+        {/* TITLE */}
         <h1 className="text-4xl font-extrabold text-gray-800 mb-2">
           <span className="text-orange-500">दक्ष</span>{" "}
           <span className="text-green-600">भारत</span>
@@ -99,37 +112,26 @@ console.log("dmcnddnfdfffdfdfdfdfdfdffd")
           Select Your Role
         </p>
 
-        {/* Role Buttons */}
+        {/* ROLE BUTTONS */}
         <div className="flex justify-center gap-4 mb-6">
           <RoleButton roleName="user" selectedRole={role} setRole={setRole} />
           <RoleButton roleName="worker" selectedRole={role} setRole={setRole} />
         </div>
 
-        {/* Google Login */}
-        <div
-          className="flex justify-center mb-4"
-          onClick={() => {
-            if (!role) toast.error("Please select role first!");
-          }}
-        >
+        {/* GOOGLE LOGIN */}
+        <div className="flex justify-center mb-4">
           <GoogleLogin
             onSuccess={handleLogin}
             onError={() => toast.error("Google login failed")}
           />
         </div>
 
-        {/* Loading */}
+        {/* LOADING */}
         {loading && (
-          <p className="text-sm text-gray-500">Logging you in...</p>
+          <p className="text-sm text-gray-500">
+            Logging you in...
+          </p>
         )}
-
-        {/* Footer */}
-        <p className="mt-6 text-gray-500 text-sm">
-          By signing in, you agree to our{" "}
-          <span className="text-blue-500 underline cursor-pointer">
-            Terms & Conditions
-          </span>
-        </p>
       </div>
     </div>
   );
