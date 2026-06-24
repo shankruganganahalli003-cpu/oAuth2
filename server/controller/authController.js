@@ -8,11 +8,16 @@ exports.googleLogin = async (req, res) => {
     const { token, role } = req.body;
     if (!token) return res.status(400).json({ error: "Google token is required" });
 
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    });
-
+   let ticket;
+try {
+  ticket = await client.verifyIdToken({
+    idToken: token,
+    audience: process.env.GOOGLE_CLIENT_ID,
+  });
+} catch (err) {
+  console.error("VERIFY ERROR:", err.message);
+  return res.status(401).json({ error: "Invalid Google token" });
+}
     const payload = ticket.getPayload();
 
     // Find or create user
@@ -43,6 +48,8 @@ exports.googleLogin = async (req, res) => {
   secure: true,
   sameSite: "none",
   maxAge: 7 * 24 * 60 * 60 * 1000,
+  secure: true,
+sameSite: "none",
 });
 
     res.status(200).json({ success: true, user, jwtToken });
