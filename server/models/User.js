@@ -1,16 +1,16 @@
-// const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
-// const userSchema = new mongoose.Schema(
-//   {
-//     name: { type: String, required: true },
-//     email: { type: String, required: true, unique: true },
-//     googleId: { type: String, required: true, unique: true },
-//     picture: { type: String },
-//     role:{type:String,
-//     enum:["user","worker","admin"],
-//     default:"user"}
-//   },
-//   { timestamps: true }
-// );
+const userSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    googleId: { type: String, required: true, unique: true },
+    picture: { type: String },
+    role:{type:String,
+    enum:["user","worker","admin"],
+    default:"user"}
+  },
+  { timestamps: true }
+);
 
-// module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("User", userSchema);
