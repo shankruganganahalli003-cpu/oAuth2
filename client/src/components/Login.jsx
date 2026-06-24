@@ -40,62 +40,47 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+const handleLogin = async (credentialResponse) => {
+  try {
+    console.log("FULL RESPONSE:", credentialResponse);
 
-  const handleLogin = async (credentialResponse) => {
-    try {
-      // 1. ROLE CHECK
-      if (!role) {
-        toast.error("Please select your role first!");
-        return;
-      }
+    const token = credentialResponse?.credential;
 
-      // 2. TOKEN CHECK
-      const token = credentialResponse?.credential;
+    console.log("GOOGLE TOKEN:", token);
 
-      if (!token) {
-        toast.error("Google login failed (no token received)");
-        return;
-      }
-
-      setLoading(true);
-
-      // 3. SEND TO BACKEND
-      const { data } = await axios.post(
-        "https://oauth2-p9p9.onrender.com/api/auth/google-login",
-        {
-          token,
-          role,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-
-      // 4. SAVE STATE
-      dispatch(
-        setCredentials({
-          user: data.user,
-          token: data.jwtToken,
-        })
-      );
-
-      localStorage.setItem("token", data.jwtToken);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-      toast.success(`Welcome ${data.user.name}`);
-
-      // 5. REDIRECT
-      navigate("/");
-    } catch (err) {
-      console.log("LOGIN ERROR:", err.response?.data || err.message);
-
-      toast.error(
-        err.response?.data?.error || "Login failed"
-      );
-    } finally {
-      setLoading(false);
+    if (!token || typeof token !== "string") {
+      toast.error("Invalid Google credential");
+      return;
     }
-  };
+
+    setLoading(true);
+
+    const { data } = await axios.post(
+      "https://oauth2-p9p9.onrender.com/api/auth/google-login",
+      {
+        token,
+        role,
+      },
+      { withCredentials: true }
+    );
+
+    dispatch(setCredentials({
+      user: data.user,
+      token: data.jwtToken,
+    }));
+
+    localStorage.setItem("token", data.jwtToken);
+    localStorage.setItem("user", JSON.stringify(data.user));
+
+    toast.success(`Welcome ${data.user.name}`);
+    navigate("/");
+  } catch (err) {
+    console.log("LOGIN ERROR:", err.response?.data);
+    toast.error(err.response?.data?.error || "Login failed");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-100 via-white to-green-100 px-4">
