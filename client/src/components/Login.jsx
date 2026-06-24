@@ -60,7 +60,7 @@ const Login = () => {
         `https://oauth2-p9p9.onrender.com//api/auth/google-login`,
         {
           token: credentialResponse.credential,
-          role
+          role  
         },
         { withCredentials: true }
       );
