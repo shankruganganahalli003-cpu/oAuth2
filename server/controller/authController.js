@@ -1,8 +1,6 @@
-const { OAuth2Client } = require("google-auth-library");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const axios = require("axios");
 
 exports.googleLogin = async (req, res) => {
   try {
@@ -12,15 +10,14 @@ exports.googleLogin = async (req, res) => {
       return res.status(400).json({ error: "Token missing" });
     }
 
-    // VERIFY GOOGLE TOKEN
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    });
+    // 🔥 VERIFY WITH GOOGLE API (FIX)
+    const { data: payload } = await axios.get(
+      `https://oauth2.googleapis.com/tokeninfo?id_token=${token}`
+    );
 
-    const payload = ticket.getPayload();
+    console.log("GOOGLE PAYLOAD:", payload);
 
-    if (!payload?.email) {
+    if (!payload.email) {
       return res.status(401).json({ error: "Invalid Google token" });
     }
 
@@ -36,9 +33,7 @@ exports.googleLogin = async (req, res) => {
         role: role || "user",
       });
     }
-console.log("TOKEN RECEIVED:", token);
-console.log("TOKEN TYPE:", typeof token);
-console.log("TOKEN START:", token?.slice(0, 20));
+
     // JWT
     const jwtToken = jwt.sign(
       { id: user._id, role: user.role },
@@ -46,7 +41,6 @@ console.log("TOKEN START:", token?.slice(0, 20));
       { expiresIn: "7d" }
     );
 
-    // COOKIE (safe config)
     res.cookie("token", jwtToken, {
       httpOnly: true,
       secure: true,
@@ -59,8 +53,9 @@ console.log("TOKEN START:", token?.slice(0, 20));
       user,
       jwtToken,
     });
+
   } catch (err) {
-    console.error("Google login error:", err.message);
+    console.error("Google login error:", err.response?.data || err.message);
     return res.status(401).json({ error: "Invalid Google token" });
   }
 };
