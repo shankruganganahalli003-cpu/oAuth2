@@ -62,9 +62,10 @@ const Login = () => {
           token: credentialResponse.credential,
           role  
         },
+            console.log("GOOGLE TOKEN:", credentialResponse.credential),
         { withCredentials: true }
       );
-      console.log("GOOGLE TOKEN:", credentialResponse.credential);
+  
 
       dispatch(setCredentials({ user: data.user, token: data.jwtToken }));
 
