@@ -15,7 +15,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <BrowserRouter>
-          <GoogleOAuthProvider clientId="36580754898-22v2fo42sfq5rinlrrsq3sfg42ui0jd4.apps.googleusercontent.com">
+          <GoogleOAuthProvider clientId="951092080585-mif0nvcjpo81jqbvsvomij7fcpa657fm.apps.googleusercontent.com">
             <App />
           </GoogleOAuthProvider>
           <Toaster position="top-center" reverseOrder={false} />
