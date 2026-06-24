@@ -49,7 +49,7 @@ const Login = () => {
     }
 
     if (!credentialResponse?.credential) {
-      toast.error("Google login failed. Please try again.");
+      toast.error("Google login ");
       return;
     }
 
@@ -76,7 +76,7 @@ console.log("dmcnddnfdfffdfdfdfdfdfdffd")
       navigate("/");
     } catch (err) {
       const message =
-        err.response?.data?.message || "Login failed. Please try again.";
+        err.response?.data?.message;
 
       toast.error(message);
       console.error("Login error:", err.response || err.message);
