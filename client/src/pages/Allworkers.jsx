@@ -10,8 +10,8 @@ const Allworkers = () => {
 
   const fetchWorkers = async () => {
     try {
-      const { data } = await axios.get("https://oauth2-p9p9.onrender.com/api/worker/getall", { withCredentials: true });
-      if (data.success) setWorkers(data.getall);
+      const { data } = await axios.get("https://oauth2-p9p9.onrender.com/api/worker/getme", { withCredentials: true });
+      if (data.success) setWorkers(data.user);
     } catch (err) {
       console.log(err.message);
       toast.error("Failed to fetch workers");
