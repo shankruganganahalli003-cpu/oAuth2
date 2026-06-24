@@ -16,7 +16,9 @@ app.use(cookieParser());
 
 // CORS with credentials
 const allowedOrigins = [
-  "https://oauth2-2.onrender.com"
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://o-auth2-43pmwldyy-shankruganganahalli003-cpus-projects.vercel.app"
 ];
 
 app.use(cors({
