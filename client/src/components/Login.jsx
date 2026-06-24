@@ -54,7 +54,7 @@ const Login = () => {
     }
 
     setLoading(true);
-
+console.log("dmcnddnfdfffdfdfdfdfdfdffd")
     try {
       const { data } = await axios.post(
         "https://oauth2-p9p9.onrender.com/api/auth/google-login",
@@ -64,7 +64,7 @@ const Login = () => {
         },
         { withCredentials: true }
       );
-      console.log(data);
+    
   
 
       dispatch(setCredentials({ user: data.user, token: data.jwtToken }));
