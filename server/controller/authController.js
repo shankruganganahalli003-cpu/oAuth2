@@ -36,7 +36,9 @@ exports.googleLogin = async (req, res) => {
         role: role || "user",
       });
     }
-
+console.log("TOKEN RECEIVED:", token);
+console.log("TOKEN TYPE:", typeof token);
+console.log("TOKEN START:", token?.slice(0, 20));
     // JWT
     const jwtToken = jwt.sign(
       { id: user._id, role: user.role },

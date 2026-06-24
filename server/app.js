@@ -9,7 +9,13 @@ const workerRoutes = require("./routes/worker");
 
 
 const app = express();
-
+app.use((req, res, next) => {
+  res.setHeader(
+    "Cross-Origin-Opener-Policy",
+    "same-origin-allow-popups"
+  );
+  next();
+});
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
