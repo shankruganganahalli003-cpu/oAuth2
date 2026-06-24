@@ -57,7 +57,7 @@ const Login = () => {
 
     try {
       const { data } = await axios.post(
-        "https://oauth2-p9p9.onrender.com/api/auth/google-login",
+        `https://oauth2-p9p9.onrender.com//api/auth/google-login`,
         {
           token: credentialResponse.credential,
           role
