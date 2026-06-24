@@ -69,8 +69,6 @@ const handleLogin = async (credentialResponse) => {
       token: data.jwtToken,
     }));
 
-    localStorage.setItem("token", data.jwtToken);
-    localStorage.setItem("user", JSON.stringify(data.user));
 
     toast.success(`Welcome ${data.user.name}`);
     navigate("/");
