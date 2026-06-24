@@ -1,8 +1,6 @@
 const { OAuth2Client } = require("google-auth-library");
 const jwt = require("jsonwebtoken");
-// controller.js
 const User = require("../models/User");
-
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 exports.googleLogin = async (req, res) => {
@@ -10,7 +8,6 @@ exports.googleLogin = async (req, res) => {
     const { token, role } = req.body;
     if (!token) return res.status(400).json({ error: "Google token is required" });
 
-    // Verify token with Google
     const ticket = await client.verifyIdToken({
       idToken: token,
       audience: process.env.GOOGLE_CLIENT_ID,
@@ -26,7 +23,7 @@ exports.googleLogin = async (req, res) => {
         email: payload.email,
         googleId: payload.sub,
         picture: payload.picture,
-        role: role || "user", // default to 'user' if role not provided
+        role: role || "user"
       });
     } else {
       // Update role if provided and different from existing

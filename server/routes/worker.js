@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const isAuth = require("../middleware/auth");
-const { createWorker, getAllWorkers, getme, getid, update, deleteid } = require("../controller/workerController");
+const { createWorker, getAllWorkers, getme, getid, update, deleteid } = require("../controller/workercontroller");
 
 router.post("/create", isAuth, createWorker); // ✅ only authenticated users
 router.get("/getall",isAuth, getAllWorkers);
