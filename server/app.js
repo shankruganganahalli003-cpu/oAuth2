@@ -17,14 +17,14 @@ app.use(cookieParser());
 // CORS with credentials
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://oauth2-2.onrender.com",
-  "https://oauth2-2.onrender.com/"
+  "https://oauth2-2.onrender.com"
 ];
 
 app.use(cors({
   origin: allowedOrigins,
   credentials: true,
 }));
+
 app.get("/", (req, res) => {
   res.send("OAuth2 Backend is running 🚀");
 });
