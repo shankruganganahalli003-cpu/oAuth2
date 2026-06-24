@@ -21,6 +21,9 @@ app.use(
     credentials: true,
   })
 );
+app.get("/", (req, res) => {
+  res.send("OAuth2 Backend is running 🚀");
+});
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/worker", workerRoutes);
