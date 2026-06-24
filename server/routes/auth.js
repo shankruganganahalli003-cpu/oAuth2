@@ -6,8 +6,7 @@ const router = express.Router();
 
 router.post("/google-login", googleLogin);
 
-router.get("/getusers",getusers);
 
 
 
-module.exports = router;
+module.exports = router;    
