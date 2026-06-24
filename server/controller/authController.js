@@ -58,12 +58,11 @@ exports.googleLogin = async (req, res) => {
     return res.status(401).json({ error: "Invalid Google token" });
   }
 };
-
 exports.getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.User.id).select("-password");
+    const user = await User.findById(req.userId).select("-password");
 
-    if (!User) {
+    if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
