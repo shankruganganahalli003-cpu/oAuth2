@@ -17,7 +17,7 @@ app.use(cookieParser());
 // CORS with credentials
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://o-auth2-sigma.vercel.app"
+  "https://o-auth2-43pmwldyy-shankruganganahalli003-cpus-projects.vercel.app"
 ];
 
 app.use(cors({
