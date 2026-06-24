@@ -15,12 +15,15 @@ app.use(express.json());
 app.use(cookieParser());
 
 // CORS with credentials
-app.use(
-  cors({
-    origin: "https://o-auth2-sigma.vercel.app",
-    credentials: true,
-  })
-);
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://o-auth2-sigma.vercel.app"
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
 app.get("/", (req, res) => {
   res.send("OAuth2 Backend is running 🚀");
 });
