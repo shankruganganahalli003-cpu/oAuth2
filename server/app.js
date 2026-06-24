@@ -16,7 +16,8 @@ app.use(cookieParser());
 
 // CORS with credentials
 const allowedOrigins = [
-  "https://oauth2-2.onrender.com"
+  "http://localhost:5173",
+"https://oauth2-2.onrender.com"
 ];
 
 app.use(cors({
