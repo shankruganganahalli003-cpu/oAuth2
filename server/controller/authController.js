@@ -1,21 +1,22 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-const axios = require("axios");
-
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 exports.googleLogin = async (req, res) => {
   try {
-    const { token, role } = req.body;
+    const { token } = req.body;
 
     if (!token) {
       return res.status(400).json({ error: "Token missing" });
     }
 
-    // 🔥 VERIFY WITH GOOGLE API (FIX)
-    const { data: payload } = await axios.get(
-      `https://oauth2.googleapis.com/tokeninfo?id_token=${token}`
-    );
+    // ✅ GOOGLE VERIFY (NEW METHOD)
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
 
-    console.log("GOOGLE PAYLOAD:", payload);
+    const payload = ticket.getPayload();
 
     if (!payload.email) {
       return res.status(401).json({ error: "Invalid Google token" });
@@ -30,23 +31,23 @@ exports.googleLogin = async (req, res) => {
         email: payload.email,
         googleId: payload.sub,
         picture: payload.picture,
-        role: role || "user",
+        role: "user", // IMPORTANT FIX
       });
     }
 
-    // JWT
     const jwtToken = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
 
-  res.cookie("token", jwtToken, {
-  httpOnly: true,
-  secure: true,        // 🔥 MUST be true on Render (HTTPS)
-  sameSite: "none",    // 🔥 REQUIRED for cross-domain
-  maxAge: 7 * 24 * 60 * 60 * 1000,
-});
+    res.cookie("token", jwtToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
     return res.json({
       success: true,
       user,
@@ -54,7 +55,7 @@ exports.googleLogin = async (req, res) => {
     });
 
   } catch (err) {
-    console.error("Google login error:", err.response?.data || err.message);
+    console.error("Google login error:", err.message);
     return res.status(401).json({ error: "Invalid Google token" });
   }
 };
