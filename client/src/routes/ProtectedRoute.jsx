@@ -5,9 +5,9 @@ import { Navigate, Outlet } from "react-router-dom";
 const ProtectedRoute = () => {
   const { user } = useSelector((state) => state.auth);
 
-if (!user) return <Navigate to="/login" replace />;
+  if (!user) return <Navigate to="/login" replace />;
 
-  return <Outlet />; // <-- important
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

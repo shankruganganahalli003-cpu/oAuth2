@@ -1,7 +1,10 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { OAuth2Client } = require("google-auth-library");
+
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+// GOOGLE LOGIN
 exports.googleLogin = async (req, res) => {
   try {
     const { token } = req.body;
@@ -10,7 +13,6 @@ exports.googleLogin = async (req, res) => {
       return res.status(400).json({ error: "Token missing" });
     }
 
-    // ✅ GOOGLE VERIFY (NEW METHOD)
     const ticket = await client.verifyIdToken({
       idToken: token,
       audience: process.env.GOOGLE_CLIENT_ID,
@@ -18,11 +20,6 @@ exports.googleLogin = async (req, res) => {
 
     const payload = ticket.getPayload();
 
-    if (!payload.email) {
-      return res.status(401).json({ error: "Invalid Google token" });
-    }
-
-    // FIND OR CREATE USER
     let user = await User.findOne({ email: payload.email });
 
     if (!user) {
@@ -31,7 +28,7 @@ exports.googleLogin = async (req, res) => {
         email: payload.email,
         googleId: payload.sub,
         picture: payload.picture,
-        role: "user", // IMPORTANT FIX
+        role: "user",
       });
     }
 
@@ -53,25 +50,30 @@ exports.googleLogin = async (req, res) => {
       user,
       jwtToken,
     });
-
   } catch (err) {
-    console.error("Google login error:", err.message);
+    console.log(err.message);
     return res.status(401).json({ error: "Invalid Google token" });
   }
 };
+
+// GET CURRENT USER
 exports.getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.userId).select("-password");
+    const token = req.cookies.token;
 
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
+    if (!token) {
+      return res.status(401).json({ user: null });
     }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const user = await User.findById(decoded.id);
 
     return res.json({
       success: true,
       user,
     });
   } catch (err) {
-    return res.status(500).json({ error: "Server error" });
+    return res.status(401).json({ user: null });
   }
 };

@@ -6,9 +6,11 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     googleId: { type: String, required: true, unique: true },
     picture: { type: String },
-    role:{type:String,
-    enum:["user","worker","admin"],
-    default:"user"}
+    role: {
+      type: String,
+      enum: ["user", "worker", "admin"],
+      default: "user",
+    },
   },
   { timestamps: true }
 );
