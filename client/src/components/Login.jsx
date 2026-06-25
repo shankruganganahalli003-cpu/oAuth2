@@ -55,14 +55,11 @@ const handleLogin = async (credentialResponse) => {
 
     setLoading(true);
 
-    const { data } = await axios.post(
-      "https://oauth2-p9p9.onrender.com/api/auth/google-login",
-      {
-        token,
-        role,
-      },
-      { withCredentials: true }
-    );
+  const { data } = await axios.post(
+  "https://oauth2-p9p9.onrender.com/api/auth/google-login",
+  { token },
+  { withCredentials: true }
+);
 
     dispatch(setCredentials({
       user: data.user,
